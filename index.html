@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>Flamme 🔥</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --ff-serif:'Playfair Display',Georgia,serif;
+  --ff-sans:'Outfit',sans-serif;
+
+/* theme 1 — Douceur */
+–c1-bg:#FFF5F0;–c1-surface:#FFFFFF;–c1-primary:#E8603C;–c1-soft:#FDE0D6;–c1-text:#1A0A06;–c1-muted:#9A6558;
+/* theme 2 — Frisson */
+–c2-bg:#F8F0FF;–c2-surface:#FFFFFF;–c2-primary:#8B2FC9;–c2-soft:#EDD9FF;–c2-text:#150A22;–c2-muted:#7A5499;
+/* theme 3 — Braise */
+–c3-bg:#FFF0F3;–c3-surface:#FFFFFF;–c3-primary:#C41040;–c3-soft:#FFD6E0;–c3-text:#1A0008;–c3-muted:#994055;
+
+–bg:var(–c1-bg);–surface:var(–c1-surface);–primary:var(–c1-primary);–soft:var(–c1-soft);–txt:var(–c1-text);–muted:var(–c1-muted);
+–accept:#22C55E;–refuse:#EF4444;
+–shadow:0 4px 24px rgba(0,0,0,.10),0 1px 4px rgba(0,0,0,.06);
+–shadow-lg:0 12px 48px rgba(0,0,0,.14),0 4px 12px rgba(0,0,0,.08);
+}
+html,body{height:100%;overflow:hidden;background:var(–bg);color:var(–txt);font-family:var(–ff-sans);transition:background .5s}
+body{display:flex;align-items:center;justify-content:center}
+
+/* theme classes */
+.t1{–bg:var(–c1-bg);–surface:var(–c1-surface);–primary:var(–c1-primary);–soft:var(–c1-soft);–txt:var(–c1-text);–muted:var(–c1-muted)}
+.t2{–bg:var(–c2-bg);–surface:var(–c2-surface);–primary:var(–c2-primary);–soft:var(–c2-soft);–txt:var(–c2-text);–muted:var(–c2-muted)}
+.t3{–bg:var(–c3-bg);–surface:var(–c3-surface);–primary:var(–c3-primary);–soft:var(–c3-soft);–txt:var(–c3-text);–muted:var(–c3-muted)}
+
+/* ══════════════════════════════════════════
+APP WRAPPER
+══════════════════════════════════════════ */
+#app{
+width:100%;max-width:420px;height:100%;max-height:860px;
+position:relative;overflow:hidden;
+display:flex;flex-direction:column;
+}
+
+/* ══════════════════════════════════════════
+SCREENS
+══════════════════════════════════════════ */
+.screen{
+position:absolute;inset:0;
+display:flex;flex-direction:column;align-items:center;
+padding:0 20px 28px;
+opacity:0;transform:translateY(16px);pointer-events:none;
+transition:opacity .38s cubic-bezier(.4,0,.2,1),transform .38s cubic-bezier(.4,0,.2,1);
+overflow-y:auto;
+}
+.screen.active{opacity:1;transform:translateY(0);pointer-events:all}
+.screen.exit{opacity:0;transform:translateY(-16px);pointer-events:none}
+
+/* ══════════════════════════════════════════
+HOME SCREEN
+══════════════════════════════════════════ */
+#s-home{justify-content:center;gap:0}
+
+.brand{text-align:center;margin-bottom:44px}
+.brand-flame{font-size:56px;display:block;animation:bob 3s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.05)}}
+.brand-name{
+font-family:var(–ff-serif);font-size:54px;font-weight:700;
+line-height:1;letter-spacing:-2px;
+background:linear-gradient(135deg,var(–primary),var(–muted));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.brand-sub{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(–muted);margin-top:8px;font-weight:400}
+
+.home-eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(–muted);opacity:.7;margin-bottom:14px;text-align:center}
+
+.theme-list{display:flex;flex-direction:column;gap:10px;width:100%}
+
+.tc{
+width:100%;border:none;background:var(–surface);
+border-radius:20px;padding:16px 20px;cursor:pointer;
+box-shadow:var(–shadow);
+display:flex;align-items:center;gap:16px;
+transition:transform .18s,box-shadow .18s;
+position:relative;overflow:hidden;
+}
+.tc::before{content:’’;position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(0,0,0,.03));pointer-events:none}
+.tc:hover{transform:translateY(-2px);box-shadow:var(–shadow-lg)}
+.tc:active{transform:scale(.97)}
+.tc-emoji{font-size:32px;flex-shrink:0}
+.tc-body{flex:1;text-align:left}
+.tc-name{font-family:var(–ff-serif);font-size:19px;font-weight:700;color:var(–txt);line-height:1}
+.tc-desc{font-size:12px;color:var(–muted);margin-top:3px;font-weight:300}
+.tc-badge{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:20px;background:var(–soft);color:var(–primary);flex-shrink:0}
+.tc-stripe{position:absolute;top:0;right:0;width:4px;height:100%;background:var(–primary);border-radius:0 20px 20px 0}
+
+/* left border accent per theme */
+.tc.t1-card{border-left:3px solid var(–c1-primary)}
+.tc.t2-card{border-left:3px solid var(–c2-primary)}
+.tc.t3-card{border-left:3px solid var(–c3-primary)}
+.tc.t1-card .tc-name{color:var(–c1-text)}.tc.t1-card .tc-desc{color:var(–c1-muted)}.tc.t1-card .tc-badge{background:var(–c1-soft);color:var(–c1-primary)}
+.tc.t2-card .tc-name{color:var(–c2-text)}.tc.t2-card .tc-desc{color:var(–c2-muted)}.tc.t2-card .tc-badge{background:var(–c2-soft);color:var(–c2-primary)}
+.tc.t3-card .tc-name{color:var(–c3-text)}.tc.t3-card .tc-desc{color:var(–c3-muted)}.tc.t3-card .tc-badge{background:var(–c3-soft);color:var(–c3-primary)}
+
+/* ══════════════════════════════════════════
+GAME SCREEN
+══════════════════════════════════════════ */
+#s-game{padding-top:0;justify-content:flex-start;gap:0}
+
+/* ── top bar ── */
+.topbar{
+width:100%;display:flex;align-items:center;justify-content:space-between;
+padding:16px 0 12px;flex-shrink:0;
+}
+.btn-home{
+width:36px;height:36px;border-radius:50%;border:none;
+background:var(–surface);box-shadow:var(–shadow);
+display:flex;align-items:center;justify-content:center;
+font-size:16px;cursor:pointer;color:var(–txt);
+transition:background .15s,transform .15s;
+}
+.btn-home:active{transform:scale(.93)}
+.topbar-title{font-family:var(–ff-serif);font-size:16px;font-style:italic;color:var(–primary);font-weight:400}
+.topbar-counter{
+font-size:12px;font-weight:600;letter-spacing:.5px;
+padding:5px 12px;border-radius:20px;
+background:var(–surface);box-shadow:var(–shadow);
+color:var(–txt);
+}
+
+/* ── progress ── */
+.prog-wrap{width:100%;height:3px;background:var(–soft);border-radius:3px;flex-shrink:0;overflow:hidden}
+.prog-fill{height:100%;border-radius:3px;background:var(–primary);transition:width .45s cubic-bezier(.4,0,.2,1)}
+
+/* ── PLAYER TURN BANNER ── */
+.turn-banner{
+width:100%;margin-top:10px;flex-shrink:0;
+display:flex;align-items:center;justify-content:space-between;
+padding:10px 16px;border-radius:16px;
+background:var(–surface);box-shadow:var(–shadow);
+transition:background .35s,box-shadow .35s;
+}
+.turn-player{display:flex;align-items:center;gap:8px}
+.turn-avatar{
+width:34px;height:34px;border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+font-size:18px;font-weight:700;flex-shrink:0;
+transition:background .35s,color .35s;
+}
+.turn-avatar.girl{background:#FFE0EC;color:#C0185A}
+.turn-avatar.boy {background:#D6EEFF;color:#1060A0}
+.turn-label{font-size:13px;font-weight:500;color:var(–txt)}
+.turn-label span{font-weight:700;color:var(–primary)}
+
+.turn-stats{display:flex;gap:10px;align-items:center}
+.stat-chip{
+display:flex;flex-direction:column;align-items:center;
+padding:4px 10px;border-radius:10px;
+font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;
+}
+.stat-chip.refuse{background:#FEE2E2;color:#DC2626}
+.stat-chip.accept{background:#DCFCE7;color:#16A34A}
+.stat-chip-val{font-family:var(–ff-serif);font-size:18px;font-weight:700;line-height:1;margin-bottom:1px}
+
+/* ── CARD STACK AREA ── */
+.stack-area{
+flex:1;width:100%;
+display:flex;align-items:center;justify-content:center;
+position:relative;padding:12px 0 8px;
+}
+
+/* ── stack ghost cards (behind) ── */
+.stack-ghost{
+position:absolute;
+width:calc(100% - 40px);max-width:340px;
+border-radius:24px;background:var(–surface);
+box-shadow:var(–shadow);
+transition:transform .3s ease,opacity .3s ease;
+}
+.stack-ghost.g2{
+height:88%;bottom:0;
+transform:translateY(10px) scale(.93);
+opacity:.55;z-index:1;
+}
+.stack-ghost.g3{
+height:88%;bottom:0;
+transform:translateY(20px) scale(.87);
+opacity:.3;z-index:0;
+}
+
+/* ── THE CARD ── */
+.swipe-card{
+position:relative;z-index:10;
+width:calc(100% - 40px);max-width:340px;
+border-radius:24px;
+background:var(–surface);
+box-shadow:var(–shadow-lg);
+cursor:grab;
+touch-action:none;
+user-select:none;
+will-change:transform;
+transition:box-shadow .2s;
+/* aspect roughly 3:4 */
+display:flex;flex-direction:column;
+}
+.swipe-card:active{cursor:grabbing}
+
+.card-inner{
+flex:1;display:flex;flex-direction:column;
+align-items:center;justify-content:center;
+padding:32px 28px;text-align:center;
+min-height:380px;
+}
+
+/* player stripe on card top */
+.card-stripe{
+height:5px;border-radius:24px 24px 0 0;
+transition:background .3s;
+}
+.card-stripe.girl{background:linear-gradient(90deg,#F9A8C9,#F472B6)}
+.card-stripe.boy {background:linear-gradient(90deg,#93C5FD,#60A5FA)}
+
+.card-badge{
+display:inline-flex;align-items:center;gap:5px;
+font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+padding:5px 12px;border-radius:20px;margin-bottom:20px;
+}
+.card-badge.girl{background:#FFE0EC;color:#C0185A}
+.card-badge.boy {background:#D6EEFF;color:#1060A0}
+
+.card-icon{font-size:46px;margin-bottom:16px;line-height:1}
+.card-num{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(–muted);font-weight:400;margin-bottom:12px}
+
+.card-divider{width:30px;height:2px;border-radius:2px;background:var(–soft);margin:0 auto 20px}
+
+.card-text{
+font-family:var(–ff-serif);font-size:21px;font-weight:400;
+line-height:1.55;color:var(–txt);
+}
+
+.card-swipe-hint{
+font-size:10px;letter-spacing:2px;text-transform:uppercase;
+color:var(–muted);opacity:.5;margin-top:18px;font-weight:400;
+}
+
+/* ── SWIPE OVERLAYS ── */
+.swipe-overlay{
+position:absolute;inset:0;border-radius:24px;
+display:flex;align-items:center;justify-content:center;
+opacity:0;pointer-events:none;
+transition:opacity .1s;
+z-index:20;
+}
+.swipe-overlay.accept-ov{background:rgba(34,197,94,.12);border:3px solid rgba(34,197,94,.5)}
+.swipe-overlay.refuse-ov{background:rgba(239,68,68,.10);border:3px solid rgba(239,68,68,.45)}
+
+.overlay-stamp{
+font-size:20px;font-weight:800;letter-spacing:3px;text-transform:uppercase;
+padding:10px 20px;border-radius:12px;border:3px solid;
+transform:rotate(-15deg);
+}
+.accept-ov .overlay-stamp{color:var(–accept);border-color:var(–accept)}
+.refuse-ov .overlay-stamp{color:var(–refuse);border-color:var(–refuse);transform:rotate(15deg)}
+
+/* ── SWIPE BUTTONS ── */
+.swipe-btns{
+width:100%;display:flex;align-items:center;justify-content:center;
+gap:20px;padding:0 20px;flex-shrink:0;margin-bottom:4px;
+}
+.swipe-btn{
+width:62px;height:62px;border-radius:50%;border:none;
+display:flex;align-items:center;justify-content:center;
+font-size:26px;cursor:pointer;
+box-shadow:var(–shadow-lg);
+transition:transform .18s cubic-bezier(.34,1.56,.64,1),box-shadow .18s;
+}
+.swipe-btn:active{transform:scale(.88)!important}
+.swipe-btn.refuse-btn{background:#FFFFFF;color:var(–refuse);border:2px solid #FECACA}
+.swipe-btn.accept-btn{background:var(–primary);color:#fff;border:2px solid transparent}
+.swipe-btn.refuse-btn:hover{transform:scale(1.08) rotate(-8deg)}
+.swipe-btn.accept-btn:hover{transform:scale(1.08) rotate(8deg)}
+.swipe-btn.disabled{opacity:.3;pointer-events:none}
+
+.btn-prev-small{
+width:44px;height:44px;border-radius:50%;border:none;
+background:var(–surface);box-shadow:var(–shadow);
+display:flex;align-items:center;justify-content:center;
+font-size:18px;cursor:pointer;color:var(–muted);
+transition:transform .18s,opacity .3s;
+}
+.btn-prev-small:hover{transform:scale(1.06)}
+.btn-prev-small.hidden{opacity:0;pointer-events:none}
+
+/* ── MATCH BURST ── */
+.match-burst{
+position:absolute;inset:0;z-index:50;
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+border-radius:24px;
+background:rgba(255,255,255,.92);
+opacity:0;pointer-events:none;
+transition:opacity .2s;
+}
+.match-burst.show{opacity:1}
+.match-icon{font-size:64px;animation:burst .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes burst{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1) rotate(0)}}
+.match-txt{font-family:var(–ff-serif);font-size:24px;font-weight:700;color:var(–accept);margin-top:8px}
+
+/* ── TOAST ── */
+.toast{
+position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);
+background:#1A0A06;color:#fff;
+padding:12px 22px;border-radius:40px;
+font-size:13px;font-weight:500;letter-spacing:.3px;
+opacity:0;transition:opacity .25s,transform .25s;
+z-index:9999;white-space:nowrap;pointer-events:none;
+box-shadow:0 4px 20px rgba(0,0,0,.25);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ══════════════════════════════════════════
+END SCREEN
+══════════════════════════════════════════ */
+#s-end{justify-content:center;text-align:center}
+
+.end-trophy{font-size:70px;margin-bottom:10px;animation:wobble 1.5s ease-in-out infinite}
+@keyframes wobble{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+
+.end-title{font-family:var(–ff-serif);font-size:34px;font-weight:700;color:var(–txt);line-height:1.1;margin-bottom:6px}
+.end-title em{font-style:italic;color:var(–primary)}
+.end-sub{font-size:14px;color:var(–muted);font-weight:300;margin-bottom:24px;max-width:280px;line-height:1.6}
+
+/* winner card */
+.winner-card{
+width:100%;max-width:320px;
+background:var(–surface);border-radius:20px;
+padding:20px;box-shadow:var(–shadow-lg);
+margin-bottom:20px;
+border-top:4px solid var(–primary);
+}
+.winner-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(–muted);margin-bottom:12px}
+.winner-name{font-family:var(–ff-serif);font-size:28px;font-weight:700;color:var(–primary);margin-bottom:4px}
+.winner-detail{font-size:13px;color:var(–muted);font-weight:300}
+
+/* scores comparison */
+.scores-row{display:flex;gap:12px;width:100%;max-width:320px;margin-bottom:20px}
+.score-panel{
+flex:1;background:var(–surface);border-radius:18px;
+padding:14px;text-align:center;box-shadow:var(–shadow);
+}
+.score-panel.girl{border-top:3px solid #F472B6}
+.score-panel.boy {border-top:3px solid #60A5FA}
+.sp-icon{font-size:24px;margin-bottom:4px}
+.sp-name{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(–muted);margin-bottom:8px}
+.sp-stat{font-family:var(–ff-serif);font-size:13px;line-height:1.8;color:var(–txt)}
+.sp-crown{color:gold;font-size:16px}
+
+/* gage section */
+.gage-section{width:100%;max-width:320px;margin-bottom:24px}
+.gage-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(–muted);margin-bottom:10px;text-align:center}
+.gage-card{
+background:var(–surface);border-radius:16px;padding:16px 20px;
+box-shadow:var(–shadow);border-left:4px solid var(–primary);
+margin-bottom:8px;text-align:left;cursor:pointer;
+transition:transform .15s,box-shadow .15s;
+}
+.gage-card:hover{transform:translateY(-2px);box-shadow:var(–shadow-lg)}
+.gage-card:active{transform:scale(.97)}
+.gage-level{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(–muted);margin-bottom:4px}
+.gage-text{font-family:var(–ff-serif);font-size:16px;font-weight:400;color:var(–txt);line-height:1.4}
+
+.end-actions{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px}
+.btn-main{height:52px;border-radius:26px;border:none;background:var(–primary);color:#fff;font-family:var(–ff-sans);font-size:14px;font-weight:600;cursor:pointer;transition:transform .18s,box-shadow .18s;box-shadow:0 4px 18px rgba(0,0,0,.15);position:relative;overflow:hidden}
+.btn-main::before{content:’’;position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18),transparent 60%)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.btn-main:active{transform:scale(.97)}
+.btn-ghost{height:48px;border-radius:24px;border:2px solid var(–primary);background:transparent;color:var(–primary);font-family:var(–ff-sans);font-size:14px;font-weight:500;cursor:pointer;transition:background .15s,transform .15s}
+.btn-ghost:hover{background:var(–soft)}
+.btn-ghost:active{transform:scale(.97)}
+
+/* ══════════════════════════════════════════
+RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-height:700px){
+.brand{margin-bottom:24px}
+.brand-name{font-size:44px}
+.card-inner{min-height:300px;padding:24px 22px}
+.card-text{font-size:18px}
+.swipe-btn{width:54px;height:54px;font-size:22px}
+}
+@media(max-height:600px){
+.stack-ghost{display:none}
+.card-inner{min-height:260px}
+.turn-stats{display:none}
+}
+</style>
+
+</head>
+<body>
+
+<!-- TOAST -->
+
+<div class="toast" id="toast"></div>
+
+<div id="app">
+
+  <!-- ══════════════════════════
+       HOME
+  ══════════════════════════ -->
+
+  <section id="s-home" class="screen active">
+    <div class="brand">
+      <span class="brand-flame">🔥</span>
+      <div class="brand-name">Flamme</div>
+      <div class="brand-sub">Le jeu des couples</div>
+    </div>
+
+```
+<div class="home-eyebrow">Choisissez votre ambiance</div>
+
+<div class="theme-list">
+  <button class="tc t1-card" onclick="startGame(1)">
+    <span class="tc-emoji">☀️</span>
+    <div class="tc-body">
+      <div class="tc-name">Douceur</div>
+      <div class="tc-desc">Tendresse, frissons & complicité</div>
+    </div>
+    <span class="tc-badge">Sympa</span>
+  </button>
+  <button class="tc t2-card" onclick="startGame(2)">
+    <span class="tc-emoji">🌙</span>
+    <div class="tc-body">
+      <div class="tc-name">Frisson</div>
+      <div class="tc-desc">Désir, caresses & tension douce</div>
+    </div>
+    <span class="tc-badge">Spicy</span>
+  </button>
+  <button class="tc t3-card" onclick="startGame(3)">
+    <span class="tc-emoji">🖤</span>
+    <div class="tc-body">
+      <div class="tc-name">Braise</div>
+      <div class="tc-desc">Audace, passion & désir intense</div>
+    </div>
+    <span class="tc-badge">Coquin</span>
+  </button>
+</div>
+```
+
+  </section>
+
+  <!-- ══════════════════════════
+       GAME
+  ══════════════════════════ -->
+
+  <section id="s-game" class="screen">
+
+```
+<div class="topbar">
+  <button class="btn-home" onclick="goHome()">←</button>
+  <span class="topbar-title" id="topbar-title">Douceur</span>
+  <span class="topbar-counter" id="topbar-counter">1 / 20</span>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-fill" id="prog-fill" style="width:5%"></div>
+</div>
+
+<!-- Player turn banner -->
+<div class="turn-banner" id="turn-banner">
+  <div class="turn-player">
+    <div class="turn-avatar girl" id="turn-avatar">👩</div>
+    <div class="turn-label" id="turn-label">Tour de <span>Elle</span></div>
+  </div>
+  <div class="turn-stats">
+    <div class="stat-chip refuse" id="cur-refuse-chip">
+      <div class="stat-chip-val" id="cur-refuses">5</div>
+      <div>Refus</div>
+    </div>
+    <div class="stat-chip accept" id="cur-accept-chip">
+      <div class="stat-chip-val" id="cur-accepts">0</div>
+      <div>OK</div>
+    </div>
+  </div>
+</div>
+
+<!-- Card stack -->
+<div class="stack-area" id="stack-area">
+  <!-- ghost cards behind -->
+  <div class="stack-ghost g3" id="ghost3"></div>
+  <div class="stack-ghost g2" id="ghost2"></div>
+
+  <!-- active card -->
+  <div class="swipe-card" id="swipe-card">
+    <div class="card-stripe girl" id="card-stripe"></div>
+    <div class="card-inner">
+      <div class="card-badge girl" id="card-badge">👩 Elle</div>
+      <div class="card-icon" id="card-icon">💫</div>
+      <div class="card-num" id="card-num">CARTE 01</div>
+      <div class="card-divider"></div>
+      <p class="card-text" id="card-text">…</p>
+      <p class="card-swipe-hint">→ Accepter · Refuser ←</p>
+    </div>
+    <!-- swipe overlays -->
+    <div class="swipe-overlay accept-ov" id="accept-ov">
+      <div class="overlay-stamp">J'accepte ✓</div>
+    </div>
+    <div class="swipe-overlay refuse-ov" id="refuse-ov">
+      <div class="overlay-stamp">✕ Je refuse</div>
+    </div>
+    <!-- match burst -->
+    <div class="match-burst" id="match-burst">
+      <div class="match-icon">💖</div>
+      <div class="match-txt">Accepté !</div>
+    </div>
+  </div>
+</div>
+
+<!-- Action buttons -->
+<div class="swipe-btns">
+  <button class="swipe-btn refuse-btn" id="btn-refuse" onclick="triggerRefuse()" title="Refuser">✕</button>
+  <button class="btn-prev-small hidden" id="btn-prev" onclick="prevCard()" title="Précédent">↩</button>
+  <button class="swipe-btn accept-btn" id="btn-accept" onclick="triggerAccept()" title="Accepter">✓</button>
+</div>
+```
+
+  </section>
+
+  <!-- ══════════════════════════
+       END (scores)
+  ══════════════════════════ -->
+
+  <section id="s-end" class="screen">
+    <div class="end-trophy" id="end-trophy">🏆</div>
+    <h2 class="end-title">Jeu <em>terminé</em> !</h2>
+    <p class="end-sub" id="end-sub">Découvrez qui doit un gage…</p>
+
+```
+<div class="winner-card">
+  <div class="winner-label">🏆 Gagnant(e)</div>
+  <div class="winner-name" id="winner-name">—</div>
+  <div class="winner-detail" id="winner-detail">—</div>
+</div>
+
+<div class="scores-row">
+  <div class="score-panel girl">
+    <div class="sp-icon">👩</div>
+    <div class="sp-name">Elle</div>
+    <div class="sp-stat" id="end-girl">—</div>
+  </div>
+  <div class="score-panel boy">
+    <div class="sp-icon">👨</div>
+    <div class="sp-name">Lui</div>
+    <div class="sp-stat" id="end-boy">—</div>
+  </div>
+</div>
+
+<div class="end-actions">
+  <button class="btn-main" id="btn-go-gage" onclick="startGageSwipe()">🎲 Choisir le gage</button>
+  <button class="btn-ghost" onclick="replayTheme()">↺ Rejouer</button>
+  <button class="btn-ghost" onclick="goHome()">Changer de thème</button>
+</div>
+```
+
+  </section>
+
+  <!-- ══════════════════════════
+       GAGE SWIPE SCREEN
+  ══════════════════════════ -->
+
+  <section id="s-gage" class="screen">
+
+```
+<div class="topbar">
+  <button class="btn-home" onclick="showScreen('s-end')">←</button>
+  <span class="topbar-title" id="gage-topbar-title">Gage</span>
+  <span class="topbar-counter" id="gage-counter">1 / 5</span>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-fill" id="gage-prog-fill" style="width:20%"></div>
+</div>
+
+<!-- Loser banner -->
+<div class="turn-banner" id="gage-banner" style="margin-top:10px">
+  <div class="turn-player">
+    <div class="turn-avatar girl" id="gage-avatar">👩</div>
+    <div class="turn-label" id="gage-label-txt">Gage pour <span>Elle</span></div>
+  </div>
+  <div class="turn-stats">
+    <div class="stat-chip refuse">
+      <div class="stat-chip-val" id="gage-refuses-left">3</div>
+      <div>Refus</div>
+    </div>
+  </div>
+</div>
+
+<!-- Card stack -->
+<div class="stack-area" id="gage-stack-area">
+  <div class="stack-ghost g3" id="gage-ghost3"></div>
+  <div class="stack-ghost g2" id="gage-ghost2"></div>
+
+  <div class="swipe-card" id="gage-card">
+    <div class="card-stripe girl" id="gage-card-stripe"></div>
+    <div class="card-inner">
+      <div class="card-badge girl" id="gage-card-badge">🎲 Gage</div>
+      <div class="card-icon" id="gage-card-icon">🎲</div>
+      <div class="card-num" id="gage-card-num">GAGE 01</div>
+      <div class="card-divider"></div>
+      <p class="card-text" id="gage-card-text">…</p>
+      <p class="card-swipe-hint" id="gage-hint">→ Accepter · Refuser ←</p>
+    </div>
+    <div class="swipe-overlay accept-ov" id="gage-accept-ov">
+      <div class="overlay-stamp">J'accepte ✓</div>
+    </div>
+    <div class="swipe-overlay refuse-ov" id="gage-refuse-ov">
+      <div class="overlay-stamp">✕ Je refuse</div>
+    </div>
+    <div class="match-burst" id="gage-match-burst">
+      <div class="match-icon">🔥</div>
+      <div class="match-txt">Gage accepté !</div>
+    </div>
+  </div>
+</div>
+
+<!-- Forced choice notice (hidden by default) -->
+<div id="gage-forced-notice" style="display:none;width:100%;max-width:340px;background:#FEE2E2;border-radius:14px;padding:12px 16px;text-align:center;margin-bottom:8px;border:1px solid #FECACA">
+  <span style="font-size:12px;color:#DC2626;font-weight:600;letter-spacing:.5px">⚠️ Plus de refus — tu dois accepter ce gage !</span>
+</div>
+
+<div class="swipe-btns">
+  <button class="swipe-btn refuse-btn" id="gage-btn-refuse" onclick="gageRefuse()" title="Refuser">✕</button>
+  <div style="width:44px"></div>
+  <button class="swipe-btn accept-btn" id="gage-btn-accept" onclick="gageAccept()" title="Accepter">✓</button>
+</div>
+```
+
+  </section>
+
+  <!-- ══════════════════════════
+       GAGE ACCEPTED SCREEN
+  ══════════════════════════ -->
+
+  <section id="s-gage-done" class="screen">
+    <div style="text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:16px">
+      <div style="font-size:72px;animation:bob 2s ease-in-out infinite">🔥</div>
+      <h2 class="end-title">Gage <em>choisi</em> !</h2>
+      <div style="width:100%;max-width:320px;background:var(--surface);border-radius:20px;padding:24px;box-shadow:var(--shadow-lg);border-top:4px solid var(--primary);text-align:left">
+        <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px" id="done-loser-label">Gage pour Elle</div>
+        <p style="font-family:var(--ff-serif);font-size:20px;line-height:1.55;color:var(--txt)" id="done-gage-text">—</p>
+      </div>
+      <p style="font-size:13px;color:var(--muted);font-weight:300;text-align:center;max-width:280px;line-height:1.6">Bonne chance… 😈</p>
+    </div>
+    <div class="end-actions" style="margin-top:0">
+      <button class="btn-main" onclick="replayTheme()">↺ Rejouer ce thème</button>
+      <button class="btn-ghost" onclick="goHome()">Changer de thème</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════════ */
+const THEMES = {
+  1:{
+    name:"Douceur",cls:"t1",
+    cards:[
+      {player:"girl",icon:"💋",text:"Embrasse-moi tendrement sur les lèvres pendant 15 secondes."},
+      {player:"boy", icon:"🌹",text:"Embrasse-moi tendrement sur les lèvres pendant 15 secondes."},
+      {player:"girl",icon:"💭",text:"Quel est l'endroit de mon corps que tu préfères caresser en premier ?"},
+      {player:"boy", icon:"💭",text:"Quel est l'endroit de mon corps que tu as le plus envie que je touche maintenant ?"},
+      {player:"girl",icon:"😏",text:"Mordille doucement mon lobe d'oreille tout en me serrant contre toi."},
+      {player:"boy", icon:"😏",text:"Serre-moi fort contre toi en mordillant mon cou."},
+      {player:"girl",icon:"🤲",text:"Fais glisser tes mains sous mon t-shirt et caresse ma peau nue."},
+      {player:"boy", icon:"🤲",text:"Fais glisser tes mains sous mon haut et caresse ma peau nue."},
+      {player:"girl",icon:"🥰",text:"Quel petit geste coquin de ma part te fait le plus sourire ?"},
+      {player:"boy", icon:"🥰",text:"Quel est ton souvenir le plus excitant avec moi jusqu'à présent ?"},
+      {player:"girl",icon:"👗",text:"Enlève lentement un de mes vêtements avec tes dents."},
+      {player:"boy", icon:"👕",text:"Enlève lentement un de mes vêtements avec tes mains."},
+      {player:"girl",icon:"🌊",text:"Laisse-moi t'embrasser dans le cou et descendre vers ta poitrine."},
+      {player:"boy", icon:"🌊",text:"Laisse-moi te caresser les seins pendant que tu m'embrasses."},
+      {player:"girl",icon:"👅",text:"Donne-moi un baiser profond avec la langue pendant 20 secondes."},
+      {player:"boy", icon:"👅",text:"Donne-moi un baiser profond avec la langue pendant 20 secondes."},
+      {player:"girl",icon:"🔥",text:"Caresse lentement mes cuisses en remontant progressivement."},
+      {player:"boy", icon:"🔥",text:"Caresse lentement mes fesses et l'intérieur de mes cuisses."},
+      {player:"girl",icon:"💥",text:"Assieds-toi sur mes genoux, frotte ton sexe contre le mien à travers les vêtements et embrasse-moi langoureusement."},
+      {player:"boy", icon:"💥",text:"Assieds-toi à califourchon sur moi, frotte ton sexe contre le mien et embrasse-moi passionnément."},
+    ]
+  },
+  2:{
+    name:"Frisson",cls:"t2",
+    cards:[
+      {player:"girl",icon:"🌙",text:"Caresse lentement mon ventre et descends vers mon bas-ventre."},
+      {player:"boy", icon:"🌙",text:"Caresse lentement mes seins et mon ventre."},
+      {player:"girl",icon:"💭",text:"Quel est le fantasme doux que tu rêves de réaliser avec moi ?"},
+      {player:"boy", icon:"💭",text:"Quel vêtement de moi aimerais-tu que j'enlève en premier pour toi ?"},
+      {player:"girl",icon:"👚",text:"Enlève ton haut lentement en me regardant dans les yeux."},
+      {player:"boy", icon:"👖",text:"Enlève ton bas lentement en me regardant dans les yeux."},
+      {player:"girl",icon:"🔥",text:"Assieds-toi à califourchon sur moi et embrasse-moi avec la langue."},
+      {player:"boy", icon:"🔥",text:"Assieds-toi derrière moi et caresse mes seins tout en m'embrassant le cou."},
+      {player:"girl",icon:"😈",text:"Embrasse et mordille mes tétons tout doucement."},
+      {player:"boy", icon:"😈",text:"Embrasse et mordille mon ventre en descendant plus bas."},
+      {player:"girl",icon:"💭",text:"Quel est l'endroit où tu aimes le plus que je te touche lentement ?"},
+      {player:"boy", icon:"💭",text:"Quel est le geste que je fais avec ma bouche qui t'excite le plus ?"},
+      {player:"girl",icon:"💦",text:"Laisse-moi t'embrasser et sucer tes seins pendant 30 secondes."},
+      {player:"boy", icon:"💦",text:"Laisse-moi t'embrasser et lécher ton torse pendant 30 secondes."},
+      {player:"girl",icon:"💃",text:"Fais-moi un strip-tease lent en enlevant deux vêtements."},
+      {player:"boy", icon:"🕺",text:"Fais-moi un strip-tease viril en enlevant deux vêtements."},
+      {player:"girl",icon:"🤲",text:"Caresse mes fesses et glisse tes mains à l'intérieur de mes vêtements."},
+      {player:"boy", icon:"🤲",text:"Caresse mes fesses et glisse tes doigts à l'intérieur de mes vêtements."},
+      {player:"girl",icon:"💥",text:"Assieds-toi sur moi, glisse ma main entre tes jambes et frotte-toi contre mes doigts tout en m'embrassant."},
+      {player:"boy", icon:"💥",text:"Allonge-toi sur moi, frotte ton sexe contre le mien et guide ma main entre tes jambes."},
+    ]
+  },
+  3:{
+    name:"Braise",cls:"t3",
+    cards:[
+      {player:"girl",icon:"🖤",text:"Déshabille-moi lentement en embrassant et léchant chaque partie découverte."},
+      {player:"boy", icon:"🖤",text:"Déshabille-moi lentement en embrassant et léchant chaque partie découverte."},
+      {player:"girl",icon:"💭",text:"Quel est ton plus grand fantasme sexuel que tu veux vivre avec moi ?"},
+      {player:"boy", icon:"💭",text:"Quelle position sexuelle avec moi te fait le plus envie en ce moment ?"},
+      {player:"girl",icon:"👅",text:"Laisse-moi t'embrasser et lécher tes seins et ton ventre."},
+      {player:"boy", icon:"👅",text:"Laisse-moi t'embrasser et lécher tes seins et ton ventre."},
+      {player:"girl",icon:"🤲",text:"Caresse mon sexe avec ta main pendant 1 minute."},
+      {player:"boy", icon:"🤲",text:"Caresse mon sexe avec ta main pendant 1 minute."},
+      {player:"girl",icon:"💦",text:"Fais-moi plaisir avec ta bouche très lentement et profondément pendant 1 minute."},
+      {player:"boy", icon:"💦",text:"Fais-moi plaisir avec ta bouche très lentement et profondément pendant 1 minute."},
+      {player:"girl",icon:"🌶️",text:"Embrasse et mordille l'intérieur de mes cuisses avant de monter."},
+      {player:"boy", icon:"🌶️",text:"Embrasse et mordille l'intérieur de mes cuisses avant de monter."},
+      {player:"girl",icon:"🔥",text:"Laisse-moi te lécher entre les jambes pendant que tu te laisses aller."},
+      {player:"boy", icon:"🔥",text:"Laisse-moi te lécher entre les jambes pendant que tu te laisses aller."},
+      {player:"girl",icon:"💥",text:"Mets tes mains derrière ton dos et laisse-moi te caresser partout où je veux pendant 2 minutes."},
+      {player:"boy", icon:"💥",text:"On se donne du plaisir oral mutuel en se regardant dans les yeux."},
+      {player:"girl",icon:"⚡",text:"Chevauche-moi, glisse mon sexe en toi et bouge lentement pendant 2 minutes."},
+      {player:"boy", icon:"⚡",text:"Allonge-toi, écarte les jambes et laisse-moi te pénétrer lentement et profondément pendant 2 minutes."},
+      {player:"girl",icon:"🌋",text:"Mets-toi à quatre pattes, cambre le dos et laisse-moi te pénétrer profondément en te tenant les hanches jusqu'à ce que tu trembles de plaisir."},
+      {player:"boy", icon:"🌋",text:"Allonge-toi, écarte les jambes et laisse-moi te pénétrer fort et vite jusqu'à ce que tu trembles de plaisir."},
+    ]
+  }
+};
+
+const GAGES = {
+  girl: [
+    {icon:"🔗", text:"Pendant 5 minutes, tu dois obéir à tous mes ordres coquins sans discuter (je choisis ce que tu fais)."},
+    {icon:"🙇", text:"Mets-toi nue, à genoux devant moi, et laisse-moi te regarder et te caresser où je veux pendant 3 minutes."},
+    {icon:"👅", text:"Allonge-toi sur le dos, écarte les jambes et reste immobile pendant que je te donne du plaisir avec ma bouche jusqu'à ce que tu supplies."},
+    {icon:"🎀", text:"Mets tes mains attachées avec un foulard derrière le dos et laisse-moi te lécher et te caresser pendant 4 minutes sans pouvoir me toucher."},
+    {icon:"🔥", text:"À quatre pattes, cambre le dos et supplie-moi de te pénétrer pendant que je te taquine lentement."},
+  ],
+  boy: [
+    {icon:"🚫", text:"Pendant 10 minutes, tu n'as pas le droit de me pénétrer ni de te toucher. Tu dois seulement me regarder et me caresser avec tes mains et ta bouche."},
+    {icon:"⏳", text:"Je vais te chevaucher lentement pendant 5 minutes, mais tu n'as pas le droit de jouir tant que je ne te le dis pas."},
+    {icon:"😈", text:"Allonge-toi et laisse-moi t'embrasser et te lécher partout sauf sur ton sexe pendant 6 minutes."},
+    {icon:"💦", text:"Pendant 8 minutes, tu dois me donner du plaisir oral sans que je te touche en retour."},
+    {icon:"🫦", text:"Je vais te caresser très lentement avec ma main pendant 5 minutes, mais tu n'as pas le droit d'éjaculer avant que je te donne la permission."},
+  ]
+};
+
+/* ══════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════ */
+const MAX_REFUSES = 5;
+const MAX_GAGE_REFUSES = 3;
+let theme = 1;
+let idx   = 0;
+let busy  = false;
+let stats = {girl:{r:MAX_REFUSES,a:0}, boy:{r:MAX_REFUSES,a:0}};
+
+// gage state
+let gageLoser      = 'girl';
+let gageIdx        = 0;
+let gageRefusesLeft= MAX_GAGE_REFUSES;
+let gageBusy       = false;
+let gageList       = [];
+
+/* ══════════════════════════════════════════════════
+   NAV
+══════════════════════════════════════════════════ */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{
+    if(s.id===id){s.classList.remove('exit');s.classList.add('active')}
+    else if(s.classList.contains('active')){s.classList.add('exit');setTimeout(()=>s.classList.remove('active','exit'),420)}
+  });
+}
+
+function applyTheme(n){
+  document.body.className = THEMES[n].cls;
+}
+
+function startGame(n){
+  theme=n; idx=0;
+  stats={girl:{r:MAX_REFUSES,a:0}, boy:{r:MAX_REFUSES,a:0}};
+  applyTheme(n);
+  renderCard(0);
+  showScreen('s-game');
+}
+function replayTheme(){startGame(theme)}
+function goHome(){document.body.className='';showScreen('s-home')}
+
+/* ══════════════════════════════════════════════════
+   RENDER GAME CARD
+══════════════════════════════════════════════════ */
+function renderCard(i){
+  const t    = THEMES[theme];
+  const card = t.cards[i];
+  const p    = card.player;
+  const total= t.cards.length;
+
+  document.getElementById('card-icon').textContent = card.icon;
+  document.getElementById('card-num').textContent  = 'CARTE ' + String(i+1).padStart(2,'0');
+  document.getElementById('card-text').textContent = card.text;
+
+  const stripe = document.getElementById('card-stripe');
+  const badge  = document.getElementById('card-badge');
+  stripe.className = 'card-stripe ' + p;
+  badge.className  = 'card-badge ' + p;
+  badge.textContent = p==='girl' ? '👩 Elle' : '👨 Lui';
+
+  const av   = document.getElementById('turn-avatar');
+  const lbl  = document.getElementById('turn-label');
+  av.className = 'turn-avatar ' + p;
+  av.textContent = p==='girl' ? '👩' : '👨';
+  lbl.innerHTML  = 'Tour de <span>' + (p==='girl' ? 'Elle' : 'Lui') + '</span>';
+
+  document.getElementById('cur-refuses').textContent = stats[p].r;
+  document.getElementById('cur-accepts').textContent = stats[p].a;
+
+  document.getElementById('topbar-title').textContent   = t.name;
+  document.getElementById('topbar-counter').textContent = (i+1) + ' / ' + total;
+  document.getElementById('prog-fill').style.width      = Math.round(((i+1)/total)*100) + '%';
+
+  document.getElementById('btn-accept').textContent = i===total-1 ? '🎉' : '✓';
+
+  document.getElementById('btn-refuse').classList.toggle('disabled', stats[p].r <= 0);
+  document.getElementById('btn-prev').classList.toggle('hidden', i===0);
+
+  document.getElementById('accept-ov').style.opacity='0';
+  document.getElementById('refuse-ov').style.opacity='0';
+  document.getElementById('match-burst').classList.remove('show');
+}
+
+/* ══════════════════════════════════════════════════
+   SWIPE ENGINE — GAME CARD
+══════════════════════════════════════════════════ */
+(function initSwipe(){
+  const card = document.getElementById('swipe-card');
+  let startX=0, startY=0, curX=0, dragging=false;
+  const MAX_TILT = 18;
+
+  function onStart(x,y){
+    if(busy)return;
+    startX=x; startY=y; curX=0; dragging=true;
+    card.style.transition='none';
+  }
+  function onMove(x,y){
+    if(!dragging||busy)return;
+    curX=x-startX;
+    const curY=(y-startY)*0.15;
+    const tilt=Math.min(Math.max(curX/12,-MAX_TILT),MAX_TILT);
+    card.style.transform=`translateX(${curX}px) translateY(${curY}px) rotate(${tilt}deg)`;
+    const ratio=Math.min(Math.abs(curX)/100,1);
+    if(curX>20){
+      document.getElementById('accept-ov').style.opacity=ratio*0.85;
+      document.getElementById('refuse-ov').style.opacity='0';
+    } else if(curX<-20){
+      document.getElementById('refuse-ov').style.opacity=ratio*0.85;
+      document.getElementById('accept-ov').style.opacity='0';
+    } else {
+      document.getElementById('accept-ov').style.opacity='0';
+      document.getElementById('refuse-ov').style.opacity='0';
+    }
+  }
+  function onEnd(){
+    if(!dragging||busy)return;
+    dragging=false;
+    card.style.transition='transform .3s cubic-bezier(.4,0,.2,1)';
+    if(curX > 80)       { triggerAccept(); }
+    else if(curX < -80) { triggerRefuse(); }
+    else {
+      card.style.transform='translateX(0) translateY(0) rotate(0)';
+      document.getElementById('accept-ov').style.opacity='0';
+      document.getElementById('refuse-ov').style.opacity='0';
+    }
+  }
+
+  card.addEventListener('touchstart',e=>{const t=e.touches[0];onStart(t.clientX,t.clientY)},{passive:true});
+  card.addEventListener('touchmove', e=>{const t=e.touches[0];onMove(t.clientX,t.clientY)},{passive:true});
+  card.addEventListener('touchend',  ()=>onEnd());
+  card.addEventListener('mousedown', e=>{onStart(e.clientX,e.clientY)});
+  document.addEventListener('mousemove',e=>{onMove(e.clientX,e.clientY)});
+  document.addEventListener('mouseup',  ()=>onEnd());
+})();
+
+/* ══════════════════════════════════════════════════
+   ACCEPT / REFUSE — GAME
+══════════════════════════════════════════════════ */
+function triggerAccept(){
+  if(busy)return;
+  const card=THEMES[theme].cards[idx];
+  stats[card.player].a++;
+  vibrate(40);
+  flyCard('swipe-card','accept-ov','refuse-ov','match-burst','right', ()=>{
+    if(idx >= THEMES[theme].cards.length-1){showEnd();return}
+    idx++;
+    resetCard('swipe-card','accept-ov','refuse-ov','match-burst');
+    renderCard(idx);
+    slideIn('swipe-card');
+  });
+}
+
+function triggerRefuse(){
+  if(busy)return;
+  const card=THEMES[theme].cards[idx];
+  const p=card.player;
+  if(stats[p].r<=0){
+    showToast(p==='girl'?"👩 Plus de refus disponibles !":"👨 Plus de refus disponibles !");
+    shakeCard('swipe-card');
+    return;
+  }
+  stats[p].r--;
+  vibrate([20,50,20]);
+  flyCard('swipe-card','accept-ov','refuse-ov','match-burst','left', ()=>{
+    if(idx >= THEMES[theme].cards.length-1){showEnd();return}
+    idx++;
+    resetCard('swipe-card','accept-ov','refuse-ov','match-burst');
+    renderCard(idx);
+    slideIn('swipe-card');
+  });
+}
+
+function prevCard(){
+  if(busy||idx===0)return;
+  busy=true;
+  const sc=document.getElementById('swipe-card');
+  sc.style.transition='transform .3s cubic-bezier(.4,0,.2,1)';
+  sc.style.transform='translateX(120%) rotate(8deg)';
+  setTimeout(()=>{
+    idx--;
+    resetCard('swipe-card','accept-ov','refuse-ov','match-burst');
+    renderCard(idx);
+    sc.style.transition='none';
+    sc.style.transform='translateX(-120%) rotate(-8deg)';
+    setTimeout(()=>{
+      sc.style.transition='transform .35s cubic-bezier(.34,1.2,.64,1)';
+      sc.style.transform='translateX(0) rotate(0)';
+      setTimeout(()=>busy=false,370);
+    },30);
+  },300);
+}
+
+/* ══════════════════════════════════════════════════
+   END SCREEN
+══════════════════════════════════════════════════ */
+function showEnd(){
+  const ga=stats.girl.a, gr=MAX_REFUSES-stats.girl.r;
+  const ba=stats.boy.a,  br=MAX_REFUSES-stats.boy.r;
+
+  let winner, loser;
+  if(gr < br)      { winner='girl'; loser='boy'; }
+  else if(br < gr) { winner='boy';  loser='girl'; }
+  else if(ga >= ba){ winner='girl'; loser='boy'; }
+  else             { winner='boy';  loser='girl'; }
+
+  gageLoser = loser;
+
+  const wLabel = winner==='girl' ? '👩 Elle' : '👨 Lui';
+  const lLabel = loser ==='girl' ? '👩 Elle' : '👨 Lui';
+  const wStat  = winner==='girl' ? {a:ga,r:gr} : {a:ba,r:br};
+
+  document.getElementById('end-trophy').textContent    = winner==='girl' ? '👸' : '🤴';
+  document.getElementById('winner-name').textContent   = wLabel + ' gagne !';
+  document.getElementById('winner-detail').textContent = wStat.a + ' carte(s) acceptée(s) · ' + wStat.r + ' refus utilisé(s)';
+
+  document.getElementById('end-girl').innerHTML =
+    ga + ' acceptées<br>' + gr + ' refusées' + (winner==='girl'?'<br><span class="sp-crown">👑</span>':'');
+  document.getElementById('end-boy').innerHTML  =
+    ba + ' acceptées<br>' + br + ' refusées'  + (winner==='boy' ?'<br><span class="sp-crown">👑</span>':'');
+
+  document.getElementById('end-sub').textContent = lLabel + ' doit un gage !';
+  document.getElementById('btn-go-gage').textContent =
+    '🎲 Choisir le gage de ' + (loser==='girl' ? 'Elle' : 'Lui');
+
+  showScreen('s-end');
+}
+
+/* ══════════════════════════════════════════════════
+   GAGE SWIPE SYSTEM
+══════════════════════════════════════════════════ */
+function startGageSwipe(){
+  gageIdx          = 0;
+  gageRefusesLeft  = MAX_GAGE_REFUSES;
+  gageBusy         = false;
+  gageList         = [...GAGES[gageLoser]]; // all 5, shuffled
+  // shuffle
+  for(let i=gageList.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [gageList[i],gageList[j]]=[gageList[j],gageList[i]];
+  }
+  renderGage(0);
+  showScreen('s-gage');
+  initGageSwipe();
+}
+
+let gageSwipeInited = false;
+function initGageSwipe(){
+  if(gageSwipeInited) return;
+  gageSwipeInited = true;
+  const card = document.getElementById('gage-card');
+  let startX=0, startY=0, curX=0, dragging=false;
+  const MAX_TILT=18;
+
+  function onStart(x,y){
+    if(gageBusy)return;
+    startX=x; startY=y; curX=0; dragging=true;
+    card.style.transition='none';
+  }
+  function onMove(x,y){
+    if(!dragging||gageBusy)return;
+    curX=x-startX;
+    const curY=(y-startY)*0.15;
+    const tilt=Math.min(Math.max(curX/12,-MAX_TILT),MAX_TILT);
+    card.style.transform=`translateX(${curX}px) translateY(${curY}px) rotate(${tilt}deg)`;
+    const ratio=Math.min(Math.abs(curX)/100,1);
+    if(curX>20){
+      document.getElementById('gage-accept-ov').style.opacity=ratio*0.85;
+      document.getElementById('gage-refuse-ov').style.opacity='0';
+    } else if(curX<-20){
+      // only show refuse overlay if refusals remain
+      if(gageRefusesLeft>0){
+        document.getElementById('gage-refuse-ov').style.opacity=ratio*0.85;
+      }
+      document.getElementById('gage-accept-ov').style.opacity='0';
+    } else {
+      document.getElementById('gage-accept-ov').style.opacity='0';
+      document.getElementById('gage-refuse-ov').style.opacity='0';
+    }
+  }
+  function onEnd(){
+    if(!dragging||gageBusy)return;
+    dragging=false;
+    card.style.transition='transform .3s cubic-bezier(.4,0,.2,1)';
+    if(curX > 80)       { gageAccept(); }
+    else if(curX < -80) { gageRefuse(); }
+    else {
+      card.style.transform='translateX(0) translateY(0) rotate(0)';
+      document.getElementById('gage-accept-ov').style.opacity='0';
+      document.getElementById('gage-refuse-ov').style.opacity='0';
+    }
+  }
+
+  card.addEventListener('touchstart',e=>{const t=e.touches[0];onStart(t.clientX,t.clientY)},{passive:true});
+  card.addEventListener('touchmove', e=>{const t=e.touches[0];onMove(t.clientX,t.clientY)},{passive:true});
+  card.addEventListener('touchend',  ()=>onEnd());
+  card.addEventListener('mousedown', e=>{onStart(e.clientX,e.clientY)});
+  document.addEventListener('mousemove',e=>{
+    if(document.getElementById('s-gage').classList.contains('active')) onMove(e.clientX,e.clientY);
+  });
+  document.addEventListener('mouseup',()=>{
+    if(document.getElementById('s-gage').classList.contains('active')) onEnd();
+  });
+}
+
+function renderGage(i){
+  const total = gageList.length;
+  const g     = gageList[i];
+  const p     = gageLoser;
+
+  document.getElementById('gage-card-icon').textContent = g.icon;
+  document.getElementById('gage-card-num').textContent  = 'GAGE ' + String(i+1).padStart(2,'0');
+  document.getElementById('gage-card-text').textContent = g.text;
+
+  const stripe = document.getElementById('gage-card-stripe');
+  const badge  = document.getElementById('gage-card-badge');
+  stripe.className = 'card-stripe ' + p;
+  badge.className  = 'card-badge ' + p;
+  badge.textContent = p==='girl' ? '👩 Son gage' : '👨 Son gage';
+
+  const av  = document.getElementById('gage-avatar');
+  const lbl = document.getElementById('gage-label-txt');
+  av.className   = 'turn-avatar ' + p;
+  av.textContent = p==='girl' ? '👩' : '👨';
+  lbl.innerHTML  = 'Gage pour <span>' + (p==='girl' ? 'Elle' : 'Lui') + '</span>';
+
+  document.getElementById('gage-topbar-title').textContent = 'Gages';
+  document.getElementById('gage-counter').textContent      = (i+1) + ' / ' + total;
+  document.getElementById('gage-prog-fill').style.width    = Math.round(((i+1)/total)*100) + '%';
+  document.getElementById('gage-refuses-left').textContent = gageRefusesLeft;
+
+  // forced mode when 0 refusals left
+  const forced = gageRefusesLeft <= 0;
+  document.getElementById('gage-forced-notice').style.display = forced ? 'block' : 'none';
+  document.getElementById('gage-btn-refuse').classList.toggle('disabled', forced);
+  document.getElementById('gage-hint').textContent = forced
+    ? '→ Tu dois accepter ce gage !'
+    : '→ Accepter · Refuser ←';
+
+  document.getElementById('gage-accept-ov').style.opacity='0';
+  document.getElementById('gage-refuse-ov').style.opacity='0';
+  document.getElementById('gage-match-burst').classList.remove('show');
+}
+
+function gageAccept(){
+  if(gageBusy)return;
+  vibrate(60);
+  const accepted = gageList[gageIdx];
+
+  // burst animation
+  const burst = document.getElementById('gage-match-burst');
+  burst.classList.add('show');
+
+  flyCard('gage-card','gage-accept-ov','gage-refuse-ov','gage-match-burst','right', ()=>{
+    // show done screen
+    document.getElementById('done-loser-label').textContent =
+      '🎲 Gage pour ' + (gageLoser==='girl' ? 'Elle' : 'Lui');
+    document.getElementById('done-gage-text').textContent = accepted.text;
+    showScreen('s-gage-done');
+  });
+}
+
+function gageRefuse(){
+  if(gageBusy)return;
+  if(gageRefusesLeft <= 0){
+    showToast('⚠️ Plus de refus — tu dois accepter !');
+    shakeCard('gage-card');
+    return;
+  }
+  gageRefusesLeft--;
+  vibrate([20,50,20]);
+
+  flyCard('gage-card','gage-accept-ov','gage-refuse-ov','gage-match-burst','left', ()=>{
+    // advance to next gage, loop if needed
+    gageIdx = (gageIdx + 1) % gageList.length;
+    resetCard('gage-card','gage-accept-ov','gage-refuse-ov','gage-match-burst');
+    renderGage(gageIdx);
+    slideIn('gage-card');
+    gageBusy = false;
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   GENERIC ANIMATION HELPERS (work on any card id)
+══════════════════════════════════════════════════ */
+function flyCard(cardId, accOvId, refOvId, burstId, dir, cb){
+  // use shared busy for game card, gageBusy for gage card
+  const isGage = cardId==='gage-card';
+  if(isGage) gageBusy=true; else busy=true;
+
+  const sc=document.getElementById(cardId);
+  if(dir==='right'){
+    const burst=document.getElementById(burstId);
+    burst.classList.add('show');
+    setTimeout(()=>burst.classList.remove('show'),600);
+  }
+  const tx=dir==='right'?'130%':'-130%';
+  const rot=dir==='right'?'20deg':'-20deg';
+  sc.style.transition='transform .38s cubic-bezier(.4,0,.2,1),opacity .38s';
+  sc.style.transform=`translateX(${tx}) rotate(${rot})`;
+  sc.style.opacity='0';
+  setTimeout(cb, 380);
+}
+
+function resetCard(cardId, accOvId, refOvId, burstId){
+  const sc=document.getElementById(cardId);
+  sc.style.transition='none';
+  sc.style.transform='translateX(0) rotate(0)';
+  sc.style.opacity='1';
+  if(accOvId) document.getElementById(accOvId).style.opacity='0';
+  if(refOvId) document.getElementById(refOvId).style.opacity='0';
+}
+
+function slideIn(cardId){
+  const isGage = cardId==='gage-card';
+  const sc=document.getElementById(cardId);
+  sc.style.transition='none';
+  sc.style.transform='translateX(0) scale(.88)';
+  sc.style.opacity='0';
+  setTimeout(()=>{
+    sc.style.transition='transform .38s cubic-bezier(.34,1.2,.64,1),opacity .28s ease';
+    sc.style.transform='translateX(0) scale(1)';
+    sc.style.opacity='1';
+    setTimeout(()=>{ if(isGage) gageBusy=false; else busy=false; },400);
+  },20);
+}
+
+function shakeCard(cardId){
+  const sc=document.getElementById(cardId);
+  sc.style.transition='transform .08s ease';
+  const seq=[10,-10,8,-8,4,-4,0];
+  let i=0;
+  const step=()=>{
+    if(i>=seq.length){sc.style.transform='translateX(0)';return}
+    sc.style.transform=`translateX(${seq[i]}px)`;
+    i++; setTimeout(step,70);
+  };
+  step();
+}
+
+/* ══════════════════════════════════════════════════
+   VIBRATION & TOAST
+══════════════════════════════════════════════════ */
+function vibrate(pattern){
+  try{if(navigator.vibrate)navigator.vibrate(pattern)}catch(e){}
+}
+
+let toastTimer=null;
+function showToast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),2500);
+}
+
+/* init */
+document.body.style.background='#FFF5F0';
+</script>
+
+</body>
+</html>
